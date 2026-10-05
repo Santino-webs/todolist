@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink-950: #07060f;
+  --color-ink-900: #0d0b1a;
+  --color-ink-800: #161329;
+  --color-neon-cyan: #22e4ff;
+  --color-neon-pink: #ff3dc8;
+  --color-neon-violet: #8b5cf6;
+  --color-neon-blue: #3b82f6;
+
+  --animate-pop-in: pop-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pop-out: pop-out 0.28s cubic-bezier(0.55, 0, 0.75, 0) both;
+  --animate-toast-in: toast-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-toast-out: toast-out 0.25s ease-in both;
+  --animate-float: float 14s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.2s linear infinite;
+  --animate-check: check 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.95); filter: blur(4px); }
+    to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+  @keyframes pop-out {
+    from { opacity: 1; transform: scale(1); max-height: 120px; }
+    to   { opacity: 0; transform: translateX(40px) scale(0.9); max-height: 0; margin: 0; padding-top: 0; padding-bottom: 0; }
+  }
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes toast-out {
+    to { opacity: 0; transform: translateY(8px) scale(0.96); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(40px, -30px) scale(1.08); }
+    66%      { transform: translate(-30px, 20px) scale(0.95); }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to   { background-position: 200% 0; }
+  }
+  @keyframes check {
+    0%   { transform: scale(0.4) rotate(-20deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+}
+
+@layer base {
+  html { color-scheme: dark; }
+  body {
+    @apply bg-ink-950 text-slate-100 font-sans antialiased min-h-dvh;
+  }
+  ::selection { background: color-mix(in oklab, var(--color-neon-violet) 60%, transparent); }
+}
+
+@utility text-gradient {
+  background: linear-gradient(100deg, var(--color-neon-cyan), var(--color-neon-violet) 45%, var(--color-neon-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 1px gradient border on a glass surface, via a masked pseudo-element. */
+@utility gradient-border {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgb(34 228 255 / 0.45), rgb(139 92 246 / 0.25) 40%, rgb(255 61 200 / 0.4));
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
